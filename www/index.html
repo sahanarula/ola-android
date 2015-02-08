@@ -1,0 +1,201 @@
+  <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/hello/dist/hello.all.min.js"></script>
+  <script type="text/javascript" src="lib/materialize/dist/js/materialize.min.js"></script>
+<script type="text/javascript">
+hello.init({ 
+    google : '124725328503-1u824iaaoe9rq28kubbe1s8ebso58ns3.apps.googleusercontent.com'
+}, {redirect_uri:'/'});
+
+
+var authFacebook = function(){
+    hello( "google" ).login({scope: "friends,photos,publish" }).then( function(){
+      hello("google").api("me/friends", "get", function(friends){
+        console.log(friends);
+          hello('google').api('/me').then(function(data){
+            $.post('/user/saveFriends', {myId: data.id, data: data, friends: friends.data}, function(data, textStatus, xhr) {
+                console.log(data);
+                            function showAndroidToast(toast){
+                                Android.showToast('toast');
+                            }
+                            showAndroidToast('hello');
+
+              /*optional stuff to do after success */
+            });
+          })
+        });
+        post_data = { 'access_token': facebook_access_token.access_token, 'viewDataId': viewDataId };
+         window.location = data;
+    }, function(e){
+      console.log('error aaya hai');
+      console.log(e);
+    }
+    );
+}
+</script>
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>OLA-ANDroid</title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="lib/materialize/dist/css/materialize.min.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+  <script type="text/javascript" src="js/ng-cordova.min.js"></script>
+  </head>
+  <body ng-app="starter">
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="col s12 l12">
+      <ul class="tabs">
+        <li class="tab col l6"><a href="#test1">OLA Vendors</a></li>
+        <li class="tab col l6"><a class="active" href="#test2">Recommended food</a></li>
+      </ul>
+    </div>
+    <div id="test1" class="col s12 l12">
+      <div class="row"  ng-repeat="f in food">
+        <div class="col s12 m7">
+          <div class="card">
+            <h5 class="center-align">{{f.result.cuisines}}</h5>
+            <div class="card-content">
+              <p>Rating: {{f.result.rating_text}} | {{f.result.rating_aggregate}}/5</p>
+            </div>
+            <div class="card-action">
+              <p>{{f.result.distance_friendly}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="test2" class="col s12 l12">
+      
+    </div>
+        
+    <div class="action-bar">
+      <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Agree</a>
+    </div>
+  </div>
+          
+    <nav ng-controller='OauthExample'>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">Logo</a>
+        <ul id="nav-mobile" class="right side-nav">
+          <li><a ng-click="googleLogin()">G+</a></li>
+          <li><a href="components.html">Components</a></li>
+          <li><a href="javascript.html">JavaScript</a></li>
+        </ul>
+
+        <!-- Include this line below -->
+        <a class="button-collapse" href="#" data-activates="nav-mobile"><i class="mdi-navigation-menu"></i></a>
+        <!-- End -->
+      </div>
+    </nav>
+      <div id="map"></div>
+      <footer class="page-footer">
+        <div class="container">
+          <div class="row">
+            <div class="col s6">
+              <button class='btn waves-effect waves-light'>Fare</button>
+            </div>
+            <div class="col s6">
+               <!-- Modal Trigger -->
+              <a class="btn waves-effect waves-light modal-trigger ride" href="#modal1" ng-click="getZomatoFromLatlong()">Ride</a>
+
+  <!-- Modal Structure -->
+            </div>
+          </div>
+          
+        </div>
+      </footer>
+
+
+
+
+
+  <script type="text/javascript">
+    $(".button-collapse").sideNav();
+var map = L.map('map').setView([51.505, -0.09], 18);
+
+// add an OpenStreetMap tile layer
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// add a marker in the given location, attach some popup content to it and open the popup
+  var myIcon = L.icon({
+    iconUrl: 'http://www.vectorea.com/tvx_uploads/4/723-purple-round-3d-map-pointer-icon.jpg',
+    iconRetinaUrl: 'my-icon@2x.png',
+    iconSize: [38, 95],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94]
+});
+var marker = L.marker([28.557706, 77.205879], {
+  draggable: true,
+}).addTo(map)
+    .bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
+    .openPopup();
+   
+  map.on('move', function () {
+    marker.setLatLng(map.getCenter());
+    //console.log(map.getCenter());
+  });
+
+
+  var planes = [
+    ["7C6B07",51.50151,-0.08727],
+    ["7C6B38",51.50201, -0.0896],
+    ["7C6CA1",51.50107, -0.09434],
+    ["7C6CA2",51.50112, -0.09067],
+    ["C81D9D",51.50086, -0.08975],
+    ["C82009",51.50211, -0.09075],
+    ];
+  var caricon = L.icon({
+    iconUrl: 'http://d1avqodpi540yc.cloudfront.net/i/carmarker.png',
+    iconRetinaUrl: 'http://d1avqodpi540yc.cloudfront.net/i/carmarker.png',
+    iconSize: [38, 95],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94]
+});
+    for (var i = 0; i < planes.length; i++) {
+      new L.marker([planes[i][1],planes[i][2]], {icon: caricon})
+        .bindPopup(planes[i][0])
+        .addTo(map);
+    }
+  //Dragend event of map for update marker position
+  map.on('dragend', function(e) {
+    var cnt = map.getCenter();
+    var position = marker.getLatLng();
+    lat = Number(position['lat']).toFixed(5);
+    lng = Number(position['lng']).toFixed(5);
+    //console.log(position);
+  });
+  $(".button-collapse").sideNav();
+   $(document).ready(function(){
+    $('ul.tabs').tabs();
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
+       
+  </script>
+  </body>
+</html>
